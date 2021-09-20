@@ -4,10 +4,25 @@ using UnityEngine;
 
 public class PlayerInputs : MonoBehaviour
 {
-    private bool lockPlayer;
+    public bool lockPlayer;
     
     private static PlayerInputs _instance;
-    public static PlayerInputs Instance { get { return _instance; } }
+    public static PlayerInputs Instance 
+    { 
+        get 
+        {
+            if (_instance == null)
+            {
+                PlayerInputs singleton = GameObject.FindObjectOfType<PlayerInputs>();
+                if (singleton == null)
+                {
+                    GameObject go = new GameObject();
+                    _instance = go.AddComponent<PlayerInputs>();
+                }
+            }
+            return _instance;
+        } 
+    }
 
     private void Awake()
     {
@@ -19,6 +34,7 @@ public class PlayerInputs : MonoBehaviour
         {
             _instance = this;
         }
+        DontDestroyOnLoad(gameObject);
         Time.timeScale = 1;
     }
     
@@ -54,10 +70,5 @@ public class PlayerInputs : MonoBehaviour
             }
         }
         return false;
-    }
-    
-    public void SetLockPlayer()
-    {
-        lockPlayer = !lockPlayer;
     }
 }

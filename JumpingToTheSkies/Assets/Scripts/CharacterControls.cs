@@ -15,6 +15,7 @@ public class CharacterControls : MonoBehaviour
     public LayerMask groundLayerMask;
     public float gravity;
     public float jumpForce = 100f;
+    public float jumppadForce = 10f;
     public bool jumping;
     private float timer;
 
@@ -112,6 +113,11 @@ public class CharacterControls : MonoBehaviour
         }
     }
 
+    private void JumperPadFunc()
+    {
+        jumpAndFallVelocity += jumppadForce;
+    }
+
     bool CheckIfGrounded()
     {
         //This hard-coded float is to set a maximum length to the cast
@@ -126,4 +132,13 @@ public class CharacterControls : MonoBehaviour
             ); //We cast a ray underneath the player to see if they collide with something that is the chosen Layer Mask.
         return hit.collider != null;
     }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.transform.tag == "Walls")
+        {
+            jumpAndFallVelocity = 0f;
+        }
+    }
+    
 }
